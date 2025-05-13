@@ -25,11 +25,9 @@ export class UserService {
   }
 
   login(username: string, password: string) {
-    const currentUser = new User(0, username, '', '', password);
-    // create a new user object with the username and password
-    // const users = { username, password };
+    const body = { username, password };
     return this.http
-      .post<User>(`${environment.apiUrl}/api/users/authenticate`, currentUser)
+      .post<User>(`${environment.apiUrl}/api/auth/login`, body)
       .pipe(
         map((user) => {
           // store user details and jwt token in local storage to keep user logged in between page refreshes

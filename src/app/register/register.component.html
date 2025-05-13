@@ -1,0 +1,109 @@
+<div class="card" style="margin-top: 10px;">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Welcome to Williams Blog!</h1>
+        <p class="text-muted">Create your account to get started.</p>
+        <div class="alert alert-danger" *ngIf="errorMessage" role="alert">
+          {{ errorMessage }}
+        </div>
+        <div class="alert alert-success" *ngIf="successMessage" role="alert">
+          {{ successMessage }}
+        </div>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group" style="padding-bottom: 10px;">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="username"
+              placeholder="Username"
+            />
+            @if (this.form.controls['username'].invalid && (this.form.controls['username'].dirty || this.form.controls['username'].touched)) {
+              <div *ngIf="this.form.controls['username'].errors?.['required']" class="text-danger">
+                Username is required.
+              </div>
+            }
+          </div>
+          <div class="form-group" style="padding-bottom: 10px;">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              placeholder="Password"
+            />
+            @if (this.form.controls['password'].invalid && (this.form.controls['password'].dirty || this.form.controls['password'].touched)) {
+              <div *ngIf="this.form.controls['password'].errors?.['required']" class="text-danger">
+                Password is required.
+              </div>
+            }
+            @if (this.form.controls['password'].invalid && this.form.controls['password'].errors?.['minlength']) {
+              <div class="text-danger">
+                Password must be at least {{ this.form.controls['password'].errors?.['minlength'].requiredLength }} characters long.
+              </div>
+            }
+            @if (this.form.controls['password'].invalid && this.form.controls['password'].errors?.['pattern']) {
+              <div class="text-danger">
+                Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.
+              </div>
+            }
+          </div>
+          <div class="form-group" style="padding-bottom: 10px;">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="confirmPassword"
+              placeholder="Confirm Password"
+            />
+            @if (this.form.controls['confirmPassword'].invalid && (this.form.controls['confirmPassword'].dirty || this.form.controls['confirmPassword'].touched)) {
+              <div *ngIf="this.form.controls['confirmPassword'].errors?.['required']" class="text-danger">
+                Confirm Password is required.
+              </div>
+            }
+            @if (this.form.errors?.['passwordMismatch'] && (this.form.controls['confirmPassword'].dirty || this.form.controls['confirmPassword'].touched)) {
+              <div class="text-danger">
+                Passwords do not match.
+              </div>
+            }
+            @if (this.form.controls['confirmPassword'].invalid && this.form.controls['confirmPassword'].errors?.['minlength']) {
+              <div class="text-danger">
+                Confirm Password must be at least {{ this.form.controls['confirmPassword'].errors?.['minlength'].requiredLength }} characters long.
+              </div>
+            }
+          </div>
+          <div class="form-group" style="padding-bottom: 10px;">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="firstName"
+              placeholder="First Name"
+            />
+            @if (this.form.controls['firstName'].invalid && (this.form.controls['firstName'].dirty || this.form.controls['firstName'].touched)) {
+              <div *ngIf="this.form.controls['firstName'].errors?.['required']" class="text-danger">
+                First Name is required.
+              </div>
+            }
+          </div>
+          <div class="form-group" style="padding-bottom: 10px;">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="lastName"
+              placeholder="Last Name"
+            />
+            @if (this.form.controls['lastName'].invalid && (this.form.controls['lastName'].dirty || this.form.controls['lastName'].touched)) {
+              <div *ngIf="this.form.controls['lastName'].errors?.['required']" class="text-danger">
+                Last Name is required.
+              </div>
+            }
+          </div>
+          <div>
+            <button [disabled]="loading" class="btn btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                Submit
+            </button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
