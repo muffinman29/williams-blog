@@ -52,12 +52,14 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: () => {
           // get return url from query parameters or default to home page
-
+          this.userService.loggedIn = true;
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/blog';
           this.router.navigateByUrl(returnUrl);
         },
         error: (error) => {
           // this.userService.error(error);
+          this.errorMessage = 'Invalid username or password';
+          this.successMessage = '';
           this.loading = false;
         },
       });

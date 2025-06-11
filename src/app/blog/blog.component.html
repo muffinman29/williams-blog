@@ -1,1 +1,7 @@
-<p>blog works!</p>
+<div *ngFor="let blog of blogs" class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">{{ blog.title }}</h5>
+    <p class="card-text">{{ blog.author }}</p>
+    <a routerLink="/post" [queryParams]="{blogId: blog.blogId}" class="btn btn-link">View Blog</a>
+  </div>
+</div>

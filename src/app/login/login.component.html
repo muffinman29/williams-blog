@@ -5,6 +5,9 @@
       <div class="col-md-6">
         <h1>Hello, Welcome Back!</h1>
         <p class="text-muted">Welcome back to your special place.</p>
+        <div class="alert alert-danger" *ngIf="errorMessage" role="alert">
+          {{ errorMessage }}
+        </div>
         <div class="form-group" style="padding-bottom: 10px;">
           <!-- <label for="tbUsername" class="sr-only">Username</label> -->
           <input

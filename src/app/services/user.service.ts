@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { environment } from '../environments/environment';
+import { StorageService } from './storage-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +13,12 @@ import { environment } from '../environments/environment';
 export class UserService {
   private userSubject: BehaviorSubject<User | null>;
   public user: Observable<User | null>;
+  public loggedIn: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, private storageService: StorageService) {
     this.userSubject = new BehaviorSubject(
-      JSON.parse(localStorage.getItem('user')!)
+      this.storageService.getItem('access_token') ?
+        JSON.parse(this.storageService.getItem('access_token')!) : null
     );
     this.user = this.userSubject.asObservable();
   }
@@ -30,9 +33,9 @@ export class UserService {
       .post<User>(`${environment.apiUrl}/api/auth/login`, body)
       .pipe(
         map((user) => {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('user', JSON.stringify(user));
+          this.storageService.setItem('access_token', JSON.stringify(user));
           this.userSubject.next(user);
+          this.loggedIn = true;
           return user;
         })
       );
@@ -40,9 +43,10 @@ export class UserService {
 
   logout() {
     // remove user from local storage and set current user to null
-    localStorage.removeItem('user');
+    this.storageService.removeItem('access_token');
+    this.loggedIn = false;
     this.userSubject.next(null);
-    this.router.navigate(['/account/login']);
+    //this.router.navigate(['/account/login']);
   }
 
   register(user: User) {
@@ -59,5 +63,10 @@ export class UserService {
         return x;
       })
     );
+  }
+
+  getUserFromToken(token: string): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/api/users/token`, { headers: { 'Authorization': `Bearer ${token}` } })
+
   }
 }

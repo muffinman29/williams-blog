@@ -1,0 +1,42 @@
+<div>asf
+  <form [formGroup]="form" (ngSubmit)="createBlog()">
+    <div class="card" style="margin-top: 10px">
+      <div class="card-body">
+        <h1>Create a New Blog</h1>
+        <p class="text-muted">Share your thoughts with the world.</p>
+        <div class="alert alert-danger" *ngIf="errorMessage" role="alert">
+          {{ errorMessage }}
+        </div>
+        <div class="form-group" style="padding-bottom: 10px;">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="title"
+            placeholder="Blog Title"
+          />
+          <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched" class="text-danger">
+            Title is required.
+            </div>
+        </div>
+        <div class="form-group" style="padding-bottom: 10px;">
+          <textarea
+            class="form-control"
+            formControlName="description"
+            placeholder="Blog Description"
+            rows="5"
+          ></textarea>
+          <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched" class="text-danger">
+            Description is required.
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button [disabled]="form.invalid || loading" class="btn btn-primary">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+          Create Blog
+        </button>
+        <a routerLink="/blogs" class="btn btn-link">Back to Blogs</a>
+      </div>
+    </div>
+  </form>
+</div>
