@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 import { BlogService } from '../services/blog.service';
 import { Blog } from '../models/blog';
 import { UserService } from '../services/user.service';
-import { StorageService } from '../services/storage-service.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-create-blog',
@@ -29,7 +29,7 @@ export class CreateBlogComponent implements OnInit {
   constructor(
     private blogService: BlogService,
     private userService: UserService,
-    private storageService: StorageService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -52,43 +52,45 @@ export class CreateBlogComponent implements OnInit {
     this.successMessage = '';
     console.log('Creating blog with data:', this.form.value);
 
-    const token = this.storageService.getItem('access_token')
-      ? JSON.parse(this.storageService.getItem('access_token')!).token
-      : null;
-
-    if (!token) {
+    if (!this.authService.isLoggedIn()) {
       this.errorMessage = 'You must be logged in to create a blog.';
       this.loading = false;
       return;
     }
 
-    this.userService.getUserFromToken(token).subscribe((user) => {
-      if (user) {
-        let blog: Blog = new Blog(
-          0,
-          this.form.value.title,
-          this.form.value.description,
-          'placeholder',
-          `${user.firstName} ${user.lastName}`,
-          [],
-          user.userId
-        );
+    const token = this.authService.getToken()
+      ? this.authService.getToken()
+      : null;
 
-        console.log('Blog object to be created:', blog);
+    if (token) {
+      this.userService.getUserFromToken(token).subscribe((user) => {
+        if (user) {
+          let blog: Blog = new Blog(
+            0,
+            this.form.value.title,
+            this.form.value.description,
+            'placeholder',
+            `${user.firstName} ${user.lastName}`,
+            [],
+            user.userId
+          );
 
-        this.blogService.createBlog(blog).subscribe({
-          next: (response) => {
-            this.successMessage = 'Blog created successfully!';
-            this.loading = false;
-            console.log('Blog created:', response);
-          },
-          error: (error) => {
-            this.errorMessage = 'Failed to create blog. Please try again.';
-            this.loading = false;
-            console.error('Error creating blog:', error);
-          },
-        });
-      }
-    });
+          console.log('Blog object to be created:', blog);
+
+          this.blogService.createBlog(blog).subscribe({
+            next: (response) => {
+              this.successMessage = 'Blog created successfully!';
+              this.loading = false;
+              console.log('Blog created:', response);
+            },
+            error: (error) => {
+              this.errorMessage = 'Failed to create blog. Please try again.';
+              this.loading = false;
+              console.error('Error creating blog:', error);
+            },
+          });
+        }
+      });
+    }
   }
 }

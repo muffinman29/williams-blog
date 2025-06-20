@@ -1,16 +1,15 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { BlogService } from '../services/blog.service';
-import { Blog } from '../models/blog'; // Adjust the path as necessary
+import { Blog } from '../models/blog';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { StorageService } from '../services/storage-service.service';
 import { UserService } from '../services/user.service';
-import { map } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [DatePipe, CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css',
 })
@@ -23,21 +22,14 @@ export class BlogComponent {
   errorMessage = '';
   constructor(
     private blogService: BlogService,
-    private route: ActivatedRoute,
-    private storageService: StorageService,
+    private authService: AuthService,
     private userService: UserService
   ) {}
   ngOnInit() {
-    console.log('Logged in:', this.userService.loggedIn);
-    const token = this.storageService.getItem('access_token')
-      ? JSON.parse(this.storageService.getItem('access_token')!).token
-      : null;
-    console.log('Token:', token);
+    const token = this.authService.getToken() ? this.authService.getToken() : null;
     if (token) {
-      console.log('Fetching blogs for user with token:', token);
       this.userService.getUserFromToken(token).subscribe((user) => {
-        const userId = user ? user.userId : -1; // Default to -1 if user is not found
-        console.log('User ID:', userId);
+        const userId = user ? user.userId : -1;
         this.blogService.getBlogsByUserId(userId).subscribe((data) => {
             this.blogs = data;
           });

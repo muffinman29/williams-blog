@@ -1,25 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { UserService } from './services/user.service';
-import { StorageService } from './services/storage-service.service';
+import { Component, OnInit } from '@angular/core';
+import { RouterLink, RouterOutlet, Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-export class AppComponent {
-  title = 'williams-blog';
-  constructor(private userService: UserService, private storageService: StorageService) { }
+export class AppComponent implements OnInit {
+  isLoggedIn = this.authService.isLoggedIn();
 
-  isLoggedIn(): boolean {
-    return this.storageService.getItem('access_token') !== null;
+  title = 'williams-blog';
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+
   }
 
   logout(): void {
-    this.userService.logout();
+    this.authService.logout();
+    //this.router.navigate(['/login']);
   }
 }

@@ -1,3 +1,4 @@
+import { AuthService } from '../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -46,15 +48,15 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService
+    this.authService
       .login(this.f['username'].value, this.f['password'].value)
       .pipe(first())
       .subscribe({
-        next: () => {
+        next: (token) => {
           // get return url from query parameters or default to home page
-          this.userService.loggedIn = true;
+          this.authService.setToken(token.token);
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/blog';
-          this.router.navigateByUrl(returnUrl);
+          window.location.href = returnUrl; // Redirect to the return URL
         },
         error: (error) => {
           // this.userService.error(error);
