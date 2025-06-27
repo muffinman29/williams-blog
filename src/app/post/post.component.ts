@@ -1,25 +1,65 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../services/post.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Post } from '../models/post';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterModule],
   templateUrl: './post.component.html',
-  styleUrl: './post.component.css'
+  styleUrl: './post.component.css',
 })
 export class PostComponent implements OnInit {
-  // Define properties and methods for the PostComponent here
-  constructor(private postService: PostService, private route: ActivatedRoute) { }
+  posts: Post[] = [];
+  blogId: number | null = null;
+  isLoggedIn = this.authService.isLoggedIn();
+
+  constructor(
+    private postService: PostService,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    const blogId = this.route.snapshot.data['blogId']; // Replace with the actual blog ID you want to fetch posts for
-    this.postService.getPostsByBlogId(blogId).subscribe({
-      next: (posts) => {
-        console.log('Posts fetched successfully:', posts);
+    this.route.queryParams.subscribe((params) => {
+      this.blogId = params['blogId'];
+      if (this.blogId) {
+        this.postService.getPostsByBlogId(this.blogId).subscribe({
+          next: (posts) => {
+            this.posts = posts;
+            console.log('Posts fetched successfully:', this.posts);
+          },
+          error: (error) => {
+            console.error('Error fetching posts:', error);
+          },
+        });
+      } else {
+        console.warn('No blogId provided in query parameters.');
       }
-  });
+    });
+  }
 
-}
+  editPost(postId: number): void {
+    // Logic to navigate to the edit post page
+    console.log(`Edit post with ID: ${postId}`);
+    // You can use a router to navigate to the edit page, e.g.:
+    // this.router.navigate(['/edit-post'], { queryParams: { postId } });
+  }
+
+  deletePost(postId: number): void {
+    // Logic to delete the post
+    console.log(`Delete post with ID: ${postId}`);
+    this.postService.deletePost(postId).subscribe({
+      next: () => {
+        console.log(`Post with ID ${postId} deleted successfully.`);
+        this.posts = this.posts.filter((post) => post.postId !== postId);
+      },
+      error: (error) => {
+        console.error(`Error deleting post with ID ${postId}:`, error);
+      },
+    });
+  }
 }

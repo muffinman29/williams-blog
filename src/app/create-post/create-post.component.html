@@ -1,1 +1,18 @@
-<p>create-post works!</p>
+
+  <div>
+    <h2>Create a New Post</h2>
+     <form [formGroup]="form" (ngSubmit)="createPost()">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" placeholder="Enter post title" formControlName="title">
+      </div>
+      <div class="mb-3">
+        <label for="content" class="form-label">Content</label>
+        <textarea class="form-control" id="content" rows="3" placeholder="Write your post content here" formControlName="content"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 10px;">Submit</button>
+      <a routerLink="/post" [queryParams]="{blogId: this.blogId}" class="btn btn-secondary btn-sm">Cancel</a>
+    </form>
+
+  </div>
+

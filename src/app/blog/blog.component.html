@@ -1,7 +1,14 @@
-<div *ngFor="let blog of blogs" class="card mb-3">
-  <div class="card-body">
-    <h5 class="card-title">{{ blog.title }}</h5>
-    <p class="card-text">{{ blog.author }}</p>
-    <a routerLink="/post" [queryParams]="{blogId: blog.blogId}" class="btn btn-link">View Blog</a>
+<div>
+  <h2>Your Blogs</h2>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let blog of blogs">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ blog.title }}</h5>
+          <a routerLink="/post" [queryParams]="{blogId: blog.blogId}" class="btn btn-primary btn-sm" style="margin-right: 10px;">View</a>
+          <a routerLink="/edit-blog" [queryParams]="{blogId: blog.blogId}" class="btn btn-secondary btn-sm">Edit</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

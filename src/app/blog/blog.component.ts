@@ -14,10 +14,6 @@ import { AuthService } from '../services/auth.service';
   styleUrl: './blog.component.css',
 })
 export class BlogComponent {
-  viewBlog(id: number) {
-    // Logic to view a specific blog by its ID
-    console.log(`Viewing blog with ID: ${id}`);
-  }
   blogs: Blog[] = [];
   errorMessage = '';
   constructor(

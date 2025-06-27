@@ -1,4 +1,4 @@
-<div>asf
+<div>
   <form [formGroup]="form" (ngSubmit)="createBlog()">
     <div class="card" style="margin-top: 10px">
       <div class="card-body">
@@ -31,11 +31,11 @@
         </div>
       </div>
       <div class="card-footer">
-        <button [disabled]="form.invalid || loading" class="btn btn-primary">
+        <button [disabled]="form.invalid || loading" class="btn btn-primary btn-sm" type="submit" style="margin-right: 10px;">
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
           Create Blog
         </button>
-        <a routerLink="/blogs" class="btn btn-link">Back to Blogs</a>
+        <a routerLink="/blogs" class="btn btn-secondary btn-sm">Back to Blogs</a>
       </div>
     </div>
   </form>

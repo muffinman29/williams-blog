@@ -27,11 +27,11 @@
           />
         </div>
         <div>
-          <button [disabled]="loading" class="btn btn-primary">
+          <button [disabled]="loading" class="btn btn-primary btn-sm" type="submit" style="margin-right: 10px;">
               <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
               Login
           </button>
-          <a routerLink="/register" class="btn btn-link">Register</a>
+          <a routerLink="/register" class="btn btn-secondary btn-sm">Register</a>
       </div>
       </div>
 
