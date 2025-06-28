@@ -4,13 +4,17 @@ import { Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validat
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { first } from 'rxjs';
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ HttpClientModule, CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [ 
+// TODO: `HttpClientModule` should not be imported into a component directly.
+// Please refactor the code to add `provideHttpClient()` call to the provider list in the
+// application bootstrap logic and remove the `HttpClientModule` import from this component.
+HttpClientModule, CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
