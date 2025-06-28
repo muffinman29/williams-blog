@@ -1,12 +1,8 @@
-<div style="padding-top: 10px;" *ngIf="isLoggedIn">
-  <a class="btn btn-primary mb-3 btn-sm" routerLink="/new-post" [queryParams]="{ blogId: blogId }">
-    Create a New Post
-  </a>
-  <a class="btn btn-secondary mb-3 btn-sm" routerLink="/blog" style="margin-left: 10px;">
-    Back to Blogs
-  </a>
-</div>
 <div>
+  <h2>{{ blogTitle }}</h2>
+  <div class="alert alert-info" *ngIf="!posts || posts.length === 0">
+    No posts available for this blog.
+  </div>
   <div class="card" *ngFor="let post of posts" style="margin-top: 10px;">
     <div class="card-body">
       <h5 class="card-title">{{ post.title }}</h5>
@@ -16,12 +12,6 @@
           >Posted on {{ post.createdDate | date : "medium" }}</small
         >
       </p>
-      <button type="button" class="btn btn-primary btn-sm" style="margin-right: 10px;" (click)="editPost(post.postId)" *ngIf="isLoggedIn">
-        Edit
-      </button>
-      <button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;" (click)="deletePost(post.postId)" *ngIf="isLoggedIn">
-        Delete
-      </button>
     </div>
   </div>
   <div *ngIf="posts.length === 0" class="alert alert-info mt-3">

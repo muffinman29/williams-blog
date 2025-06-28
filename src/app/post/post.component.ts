@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Post } from '../models/post';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+import { BlogService } from '../services/blog.service';
 
 @Component({
   selector: 'app-post',
@@ -16,17 +17,28 @@ export class PostComponent implements OnInit {
   posts: Post[] = [];
   blogId: number | null = null;
   isLoggedIn = this.authService.isLoggedIn();
+  blogTitle: string = '';
 
   constructor(
     private postService: PostService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private blogService: BlogService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.blogId = params['blogId'];
       if (this.blogId) {
+        this.blogService.getBlogById(this.blogId).subscribe({
+          next: (blog) => {
+            this.blogTitle = blog.title;
+            console.log('Blog title fetched successfully:', this.blogTitle);
+          },
+          error: (error) => {
+            console.error('Error fetching blog title:', error);
+          },
+        });
         this.postService.getPostsByBlogId(this.blogId).subscribe({
           next: (posts) => {
             this.posts = posts;
