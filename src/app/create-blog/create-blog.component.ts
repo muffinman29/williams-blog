@@ -13,11 +13,10 @@ import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-create-blog',
-  standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
-  templateUrl: './create-blog.component.html',
-  styleUrl: './create-blog.component.css',
+    selector: 'app-create-blog',
+    imports: [CommonModule, RouterLink, ReactiveFormsModule],
+    templateUrl: './create-blog.component.html',
+    styleUrl: './create-blog.component.css'
 })
 export class CreateBlogComponent implements OnInit {
   title = 'Create Blog';

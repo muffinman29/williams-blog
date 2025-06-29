@@ -7,11 +7,11 @@ import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-blog',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './blog.component.html',
-  styleUrl: './blog.component.css',
+    selector: 'app-blog',
+    standalone: true,
+    imports: [CommonModule, RouterLink],
+    templateUrl: './blog.component.html',
+    styleUrl: './blog.component.css'
 })
 export class BlogComponent {
   blogs: Blog[] = [];

@@ -1,23 +1,22 @@
-<div>
-  <h2>{{ blogTitle }}</h2>
+<div class="row" style="height: 100vh">
+  <div class="col-md-2" style="background-color: #c11b25;">
+    <h2>{{ blogTitle }}</h2>
+  </div>
+  <div class="col-md-10" style="padding: 30px;">
   <div class="alert alert-info" *ngIf="!posts || posts.length === 0">
     No posts available for this blog.
   </div>
-  <div class="card" *ngFor="let post of posts" style="margin-top: 10px;">
-    <div class="card-body">
-      <h5 class="card-title">{{ post.title }}</h5>
-      <p class="card-text">{{ post.content }}</p>
-      <p class="card-text">
-        <small class="text-muted"
-          >Posted on {{ post.createdDate | date : "medium" }}</small
-        >
-      </p>
-    </div>
+  <div  *ngFor="let post of posts" style="padding-top: 10px; padding-bottom:20px; padding-left: 30px;">
+    <p class="text-muted" style="margin-bottom: 5px;">{{ post.createdDate | date:'mediumDate' }}</p>
+    <a href="#" style="color: #c11b25; font-size: 3em; text-decoration: none;">{{ post.title }}</a>
+    <p [innerHTML]="post.content" class="text-muted"></p>
+    <hr>
   </div>
   <div *ngIf="posts.length === 0" class="alert alert-info mt-3">
     No posts available for this blog.
   </div>
-  <div *ngIf="posts.length > 0" class="mt-3">
+  <div *ngIf="posts.length > 0" class="mt-3" class="text-muted">
     <p>Total Posts: {{ posts.length }}</p>
   </div>
+</div>
 </div>

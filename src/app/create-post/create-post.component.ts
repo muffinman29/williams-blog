@@ -1,27 +1,39 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
+  FormsModule,
 } from '@angular/forms';
 import { PostService } from '../services/post.service';
 import { Post } from '../models/post';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
+import { NgxEditorComponent, NgxEditorMenuComponent, Editor } from 'ngx-editor';
 
 @Component({
   selector: 'app-create-post',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, RouterLink],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    RouterLink,
+    NgxEditorComponent,
+    NgxEditorMenuComponent,
+  ],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.css',
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent implements OnInit, OnDestroy {
   form!: FormGroup;
   blogId!: number;
+  html = '';
+  editor!: Editor;
 
-  constructor(
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,
     private postService: PostService,
     private route: ActivatedRoute
   ) {}
@@ -31,9 +43,20 @@ export class CreatePostComponent implements OnInit {
       title: new FormControl('', [Validators.required]),
       content: new FormControl('', [Validators.required]),
     });
+    if(isPlatformBrowser(this.platformId)) {
+      this.editor = new Editor();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if(this.editor && isPlatformBrowser(this.platformId)) {
+      // Ensure the editor is destroyed only in the browser environment
+      this.editor.destroy();
+    }
   }
 
   createPost(): void {
+    console.log('editor content:', this.html);
     if (this.form.invalid) {
       console.error('Form is invalid:', this.form.errors);
       return;

@@ -8,15 +8,11 @@ import { UserService } from '../services/user.service';
 import { passwordMatchValidator } from '../validators/password-match-validator';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [
-// TODO: `HttpClientModule` should not be imported into a component directly.
-// Please refactor the code to add `provideHttpClient()` call to the provider list in the
-// application bootstrap logic and remove the `HttpClientModule` import from this component.
-HttpClientModule, CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css',
+    selector: 'app-register',
+    standalone: true,
+    imports: [ CommonModule, ReactiveFormsModule, RouterModule ],
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
   form!: FormGroup;

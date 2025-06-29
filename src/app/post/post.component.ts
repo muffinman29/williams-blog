@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PostService } from '../services/post.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Post } from '../models/post';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { BlogService } from '../services/blog.service';
+import { AppServiceService } from '../services/app-service.service';
 
 @Component({
-  selector: 'app-post',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './post.component.html',
-  styleUrl: './post.component.css',
+    selector: 'app-post',
+    standalone: true,
+    imports: [CommonModule, RouterModule],
+    templateUrl: './post.component.html',
+    styleUrl: './post.component.css'
 })
 export class PostComponent implements OnInit {
   posts: Post[] = [];
@@ -23,13 +24,15 @@ export class PostComponent implements OnInit {
     private postService: PostService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private blogService: BlogService
+    private blogService: BlogService,
+    private appService: AppServiceService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.blogId = params['blogId'];
       if (this.blogId) {
+        this.appService.setBlogId(this.blogId);
         this.blogService.getBlogById(this.blogId).subscribe({
           next: (blog) => {
             this.blogTitle = blog.title;
