@@ -13,9 +13,15 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 })
 export class ViewPostComponent implements OnInit {
   post: Post | null = null;
+  comments: any[] = []; // Assuming comments are fetched later
   constructor(private postService: PostService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.comments.push({
+      id: 1,
+      content: 'This is a sample comment.',
+    });
+
     this.route.queryParams.subscribe((params) => {
       const postId = params['postId'];
       if (postId) {
