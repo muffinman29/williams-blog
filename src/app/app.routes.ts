@@ -6,6 +6,7 @@ import { BlogComponent } from './blog/blog.component';
 import { RegisterComponent } from './register/register.component';
 import { CreateBlogComponent } from './create-blog/create-blog.component';
 import { CreatePostComponent } from './create-post/create-post.component';
+import { ViewPostComponent } from './view-post/view-post.component';
 
 export const routes: Routes = [
   { path: '', component: WelcomeComponent},
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'new-blog', component: CreateBlogComponent },
   { path: 'new-post', component: CreatePostComponent },
+  { path: 'view-post', component: ViewPostComponent }
 ];
 export default routes;

@@ -29,17 +29,31 @@ export class PostService {
   }
   createPost(post: Post) {
     console.log('Creating post:', post);
-    return this.http.post<Post>(`${environment.apiUrl}/api/posts/create`, post, { headers: this.headerInformation() });
+    return this.http.post<Post>(
+      `${environment.apiUrl}/api/posts/create`,
+      post,
+      { headers: this.headerInformation() }
+    );
   }
   updatePost(post: Post) {
-    return this.http.put<Post>(`${environment.apiUrl}/api/posts`, post, { headers: this.headerInformation() });
+    return this.http.put<Post>(`${environment.apiUrl}/api/posts`, post, {
+      headers: this.headerInformation(),
+    });
   }
   deletePost(postId: number) {
-    return this.http.delete(`${environment.apiUrl}/api/posts/${postId}`, { headers: this.headerInformation() });
+    return this.http.delete(`${environment.apiUrl}/api/posts/${postId}`, {
+      headers: this.headerInformation(),
+    });
   }
   getPostsByUserId(userId: number) {
     return this.http.get<Post[]>(
-      `${environment.apiUrl}/api/posts/user/${userId}`, { headers: this.headerInformation() }
+      `${environment.apiUrl}/api/posts/user/${userId}`,
+      { headers: this.headerInformation() }
     );
+  }
+  getPostById(postId: number) {
+    return this.http.get<Post>(`${environment.apiUrl}/api/posts/${postId}`, {
+      headers: this.headerInformation(),
+    });
   }
 }
