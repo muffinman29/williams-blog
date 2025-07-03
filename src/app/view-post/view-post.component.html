@@ -5,17 +5,6 @@
   <p class="text-muted">{{ post?.createdDate | date : "mediumDate" }}</p>
   <p [innerHTML]="post?.content"></p>
 
-  <div>
-    <h2 style="color: #c11b25">Comments</h2>
-    <div *ngIf="!comments || comments.length === 0" class="alert alert-info">
-      No comments available for this post.
-    </div>
-    <div *ngFor="let comment of comments" class="mb-3">
-      <p class="text-muted" style="margin-bottom: 5px">
-        {{ comment.createdDate | date : "mediumDate" }}
-      </p>
-      <p>{{ comment.content }}</p>
-      <hr />
-    </div>
-  </div>
+  <app-comment [blogId]="post?.blogId">
+  </app-comment>
 </div>

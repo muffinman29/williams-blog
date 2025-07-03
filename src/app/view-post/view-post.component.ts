@@ -3,25 +3,24 @@ import { PostService } from '../services/post.service';
 import { Post } from '../models/post';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Comment } from '../models/comment'; // Assuming you have a Comment model
+import { CommentComponent } from '../comment/comment.component';
 
 @Component({
   selector: 'app-view-post',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CommentComponent],
   templateUrl: './view-post.component.html',
-  styleUrl: './view-post.component.css'
+  styleUrl: './view-post.component.css',
 })
 export class ViewPostComponent implements OnInit {
   post: Post | null = null;
-  comments: any[] = []; // Assuming comments are fetched later
-  constructor(private postService: PostService, private route: ActivatedRoute) {}
+  constructor(
+    private postService: PostService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.comments.push({
-      id: 1,
-      content: 'This is a sample comment.',
-    });
-
     this.route.queryParams.subscribe((params) => {
       const postId = params['postId'];
       if (postId) {
@@ -31,7 +30,7 @@ export class ViewPostComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error fetching post:', error);
-          }
+          },
         });
       } else {
         console.warn('No postId provided in query parameters.');
